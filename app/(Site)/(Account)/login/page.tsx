@@ -14,7 +14,7 @@ import FlexGap from "../../UtilClasses/FlexGap";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
-import type { ChangeEvent, KeyboardEvent, SubmitEvent } from "react";
+import type { ChangeEvent, KeyboardEvent, SyntheticEvent } from "react";
 import { redirect } from "next/navigation";
 import * as userClient from "../../Clients/userClient";
 import { setTitle } from "../../reducer";
@@ -46,7 +46,7 @@ export default function SignIn() {
   };
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) =>
     e.key === "Enter" && signIn();
-  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (credentials.username !== "" && credentials.password !== "") {
       signIn();

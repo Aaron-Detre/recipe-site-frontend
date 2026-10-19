@@ -10,7 +10,7 @@ import { redirect } from "next/navigation";
 import * as userClient from "../../Clients/userClient";
 import { setTitle } from "../../reducer";
 import { User } from "../../UtilClasses/Types";
-import type { ChangeEvent, SubmitEvent } from "react";
+import type { ChangeEvent, SyntheticEvent } from "react";
 
 export default function Settings() {
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ export default function Settings() {
   const roleChanges = (value: string) =>
     setUpdatedUser((user) => (user ? { ...user, role: value } : user));
 
-  const onSave = (e: SubmitEvent<HTMLFormElement>) => {
+  const onSave = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (updatedUser?.username && updatedUser.password) {
       userClient.updateUser(updatedUser._id, updatedUser);

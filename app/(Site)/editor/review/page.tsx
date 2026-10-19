@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { v4 as uuidv4 } from "uuid";
 import { setTitle } from "@/app/(Site)/reducer";
-import type { ChangeEvent, SubmitEvent } from "react";
+import type { ChangeEvent, SyntheticEvent } from "react";
 
 export default function ReviewEditor() {
   const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export default function ReviewEditor() {
   const textChanges = (e: ChangeEvent<HTMLTextAreaElement>) =>
     setReviewText(e.target.value);
 
-  const publishReview = async (e: SubmitEvent<HTMLFormElement>) => {
+  const publishReview = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (currentUser && reviewTitle !== "") {
       const reviewId = uuidv4();

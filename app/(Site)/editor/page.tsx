@@ -14,7 +14,7 @@ import {
   InstructionWithId,
   ScalableIngredient,
 } from "../UtilClasses/Types";
-import type { ChangeEvent, SubmitEvent } from "react";
+import type { ChangeEvent, SyntheticEvent } from "react";
 import { useEffect, useState } from "react";
 import * as recipeClient from "../Clients/recipeClient";
 import * as localRecipeClient from "../Clients/localRecipeClient";
@@ -145,7 +145,7 @@ export default function Editor() {
       instructions.filter((instruction, index) => instructionIndex !== index)
     );
 
-  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = uuidv4();
     await publishRecipe(id);

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setTitle } from "../../reducer";
 import { setCurrentUser } from "../reducer";
-import type { ChangeEvent, SubmitEvent } from "react";
+import type { ChangeEvent, SyntheticEvent } from "react";
 
 export default function SignUp() {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export default function SignUp() {
   const roleChanges = (value: string) =>
     setNewUser({ ...newUser, role: value });
 
-  const signUp = async (e: SubmitEvent<HTMLFormElement>) => {
+  const signUp = async (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const signedUp = await userClient.signUp(newUser);
     if (signedUp) {
