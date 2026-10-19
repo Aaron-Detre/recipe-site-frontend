@@ -49,7 +49,9 @@ export default function Reviews() {
         title={getReviewsCardTitle()}
         reviews={reviews}
         setReviews={setReviews}
-        isYourProfile={currentUser && author && currentUser._id === author._id}
+        isYourProfile={Boolean(
+          currentUser && author && currentUser._id === author._id
+        )}
       />
     </div>
   );

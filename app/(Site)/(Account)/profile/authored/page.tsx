@@ -49,7 +49,9 @@ export default function AuthoredRecipes() {
         title={getAuthoredCardTitle()}
         recipes={recipes}
         setRecipes={setRecipes}
-        isYourProfile={currentUser && author && currentUser._id === author._id}
+        isYourProfile={Boolean(
+          currentUser && author && currentUser._id === author._id
+        )}
       />
     </div>
   );
