@@ -12,7 +12,6 @@ import {
 } from "react-bootstrap";
 import {
   Ingredient,
-  // IngredientWithId,
   InstructionWithId,
   ScalableIngredient,
 } from "../UtilClasses/Types";
@@ -108,7 +107,7 @@ export default function Editor() {
               recipeInstructions.push({
                 id: uuidv4(),
                 instruction: instruction,
-              }) //TODO: duplication
+              })
           );
       }
       setInstructions(recipeInstructions);
@@ -177,8 +176,6 @@ export default function Editor() {
     }
   };
 
-  //BONUS TODO: drag and drop https://docs.dndkit.com/presets/sortable
-  //BONUS TODO: ADD CHECK FOR SCALABLE RECIPE ON INGREDIENTS WHICH SWITCHES MEASURE TO { AMOUNT: NUMBER, UNIT: STRING }
   return currentUser ? (
     currentUser.role !== "REVIEWER" ? (
       <div>
@@ -218,22 +215,6 @@ export default function Editor() {
               </Card.Body>
             </Card>
           </FormGroup>
-          {/* <FormGroup controlId="wdf-editor-serves" className="mt-3">
-            <Card>
-              <Card.Body className="d-block d-md-flex align-items-center gap-3">
-                <FormLabel className="mb-0">
-                  <Card.Title>Serves</Card.Title>
-                </FormLabel>
-                <FormControl
-                  type="number"
-                  onChange={servesChanges}
-                  placeholder="How many people does this recipe serve"
-                  value={serves}
-                />
-              </Card.Body>
-            </Card>
-
-          </FormGroup> */}
           <Row>
             <Col lg={6} className="mt-3">
               <div className="wdf-editor-ingredients">

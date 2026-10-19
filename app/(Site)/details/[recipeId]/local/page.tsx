@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-//TODO: INSANE DUPLICATION!!!!
-
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as localRecipeClient from "../../../Clients/localRecipeClient";
@@ -55,7 +53,6 @@ export default function ApiRecipeDetails() {
   const reviewDisabled = () => !currentUser || currentUser.role === "AUTHOR";
   const remixDisabled = () => !currentUser || currentUser.role === "REVIEWER";
 
-  //TODO: duplication
   const getReviewTooltip = () => {
     if (currentUser) {
       if (currentUser.role === "AUTHOR") {
@@ -155,14 +152,6 @@ export default function ApiRecipeDetails() {
             </Row>
           </div>
         </Col>
-        {/* {hasImage && (
-          <Col xs={4} className="wdf-details-right">
-            <Image
-              src={recipe?.strMealThumb ? recipe.strMealThumb : defaultImage}
-              className="wdf-details-image"
-            />
-          </Col>
-        )} */}
       </div>
       <div className="wdf-details-bottom-row">
         <ReviewsCard isReviewOfApiRecipe={false} />

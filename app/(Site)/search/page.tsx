@@ -12,8 +12,6 @@ import UserSearchResultsPage from "./UserSearchResultsPage";
 
 export default function Search() {
   const dispatch = useDispatch();
-  // const pathname = usePathname();
-  // const basePathname = pathname.split("?")[0];
   const router = useRouter();
   useEffect(() => {
     dispatch(setTitle("Search"));

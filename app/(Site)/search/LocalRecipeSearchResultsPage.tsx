@@ -43,7 +43,6 @@ export default function LocalRecipeSearchResultsPage() {
     />
   );
 
-  // TODO: duplication
   return (
     <div className="wdf-search-container">
       <SearchBar placeholder="Search For Recipes" />

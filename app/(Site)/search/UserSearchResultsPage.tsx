@@ -11,7 +11,7 @@ export default function UserSearchResultsPage() {
   const criteria = useSearchParams().get("criteria");
   const searchUsers = async (searchParam: string) => {
     const users = await userClient.filterUsersByName(searchParam);
-    setUsers(users); //TODO: users instanceof Array ? users : []
+    setUsers(users);
   };
 
   useEffect(() => {

@@ -181,7 +181,6 @@ export default function IngredientsEditor({
         </Button>
       </Card.Header>
       <Card.Body>
-        {/* //Todo: duplication */}
         {scalable &&
           scalableIngredients.map((ingredient, index) => (
             <Card
@@ -266,7 +265,6 @@ export default function IngredientsEditor({
                   </Col>
                   <Col xl={6}>
                     <FormGroup
-                      // className="mt-2" TODO: media
                       controlId={`wdf-editor-measure-${index}`}
                     >
                       <FormLabel>Measurement</FormLabel>

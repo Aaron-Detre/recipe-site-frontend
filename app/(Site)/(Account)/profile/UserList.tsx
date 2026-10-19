@@ -10,7 +10,6 @@ export default function UserList({
   getUserRole: (user: User) => string;
 }) {
   return (
-    //TODO: remove all listgroups maybe
     <ListGroup>
       {users.map(
         (user: User, index: number) =>

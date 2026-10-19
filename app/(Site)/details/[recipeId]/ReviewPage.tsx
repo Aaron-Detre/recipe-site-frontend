@@ -70,7 +70,6 @@ export default function ReviewPage({
           }/${isLocalRecipeReview ? "local" : "api"}`}
           className="wdf-review-recipe-card shadow"
         >
-          {/* // TODO: HEADER? */}
           <Card.Img
             src={
               isLocalRecipeReview

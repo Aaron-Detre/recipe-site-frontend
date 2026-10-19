@@ -37,14 +37,10 @@ const getUserFollowing = (userId: string) =>
   userClient.getUserFollowing(userId);
 const getUserFollowers = (userId: string) =>
   userClient.getUserFollowers(userId);
-// const getUserSavedRecipes = (): Recipe[] => {
-//
-// }
 const getUserAuthoredRecipes = (userId: string) =>
   userClient.getUserAuthoredRecipes(userId);
 const getUserReviews = (userId: string) => userClient.getUserReviews(userId);
 
-//TODO: duplication
 const showAuthoredRecipes = (user: User | null): boolean =>
   user !== null && user.role !== "REVIEWER";
 const showReviewedRecipes = (user: User | null): boolean =>
@@ -211,13 +207,11 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
-      {/* -------------------------------------------------------------------------------- */}
       {currentUser && (
         <div className="d-flex gap-3">
           <FlexGap />
         </div>
       )}
-      {/* -------------------------------------------------------------------------------- */}
       {profile && (
         <div className="wdf-profile-body mb-5">
           <Row>

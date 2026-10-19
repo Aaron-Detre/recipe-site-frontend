@@ -43,7 +43,6 @@ export const getUserById = async (userId: string) => {
   return response.data;
 };
 
-//TODO: duplication
 export const getUserFollowing = async (userId: string) => {
   const response = await axiosWithCredentials.get(
     `${USERS_API}/following/${userId}`

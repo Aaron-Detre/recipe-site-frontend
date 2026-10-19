@@ -32,7 +32,6 @@ export default function ReviewEditor() {
   const apiRecipeId = searchParams.get("apiRecipe");
   const localRecipeId = searchParams.get("localRecipe");
   const [recipeTitle, setRecipeTitle] = useState("");
-  // const [hoverStars, setHoverStars] = useState(0); BONUS!!!
   const [stars, setStars] = useState(0);
   const [reviewTitle, setReviewTitle] = useState("");
   const [reviewText, setReviewText] = useState("");
