@@ -1,6 +1,5 @@
 import { Image } from "react-bootstrap";
 import "./infoCardStyles.css";
-import { GiKnifeFork } from "react-icons/gi";
 
 export default function RecipeInfoCard({
   title,

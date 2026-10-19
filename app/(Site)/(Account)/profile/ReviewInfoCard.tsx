@@ -1,5 +1,4 @@
 import { Image } from "react-bootstrap";
-import { GiKnifeFork } from "react-icons/gi";
 import "./infoCardStyles.css";
 
 export default function ReviewInfoCard({

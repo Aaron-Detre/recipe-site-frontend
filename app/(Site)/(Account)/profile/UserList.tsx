@@ -1,4 +1,4 @@
-import { Button, Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { ListGroup, ListGroupItem } from "react-bootstrap";
 import { User } from "../../UtilClasses/Types";
 import UserInfoCard from "./UserInfoCard";
 

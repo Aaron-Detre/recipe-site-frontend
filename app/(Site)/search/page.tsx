@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import "./searchStyles.css";
 import { useDispatch } from "react-redux";
 import { setTitle } from "../reducer";

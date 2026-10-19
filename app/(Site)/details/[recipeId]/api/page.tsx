@@ -1,5 +1,5 @@
 "use client";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as recipeClient from "../../../Clients/recipeClient";
 import { Button, Col, Image, Row } from "react-bootstrap";

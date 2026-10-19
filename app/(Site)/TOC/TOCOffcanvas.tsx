@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import { Nav, NavItem, NavLink, Offcanvas } from "react-bootstrap";
 import { Path, paths } from "./TOC";
 import FlexGap from "../UtilClasses/FlexGap";
-import { useState } from "react";
 import AccountButtons from "./AccountButtons";
 
 export default function TOCOffcanvas({

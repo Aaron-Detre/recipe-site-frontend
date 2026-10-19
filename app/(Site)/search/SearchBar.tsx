@@ -1,7 +1,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { Button, Col, FormControl, InputGroup } from "react-bootstrap";
+import { Button, FormControl, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import type { ChangeEvent, KeyboardEvent } from "react";

@@ -4,7 +4,7 @@ import * as reviewClient from "../Clients/reviewClient";
 import * as recipeClient from "../Clients/recipeClient";
 import SearchBar from "./SearchBar";
 import { useSearchParams } from "next/navigation";
-import { Image, OverlayTrigger, Popover, Table } from "react-bootstrap";
+import { Image, OverlayTrigger } from "react-bootstrap";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import "../(Account)/profile/infoCardStyles.css";
 import { Review } from "../UtilClasses/Types";

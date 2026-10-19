@@ -11,7 +11,6 @@ import {
 } from "react-bootstrap";
 import {
   Ingredient,
-  IngredientWithId,
   ScalableIngredient,
 } from "../../UtilClasses/Types";
 import type { ChangeEvent } from "react";

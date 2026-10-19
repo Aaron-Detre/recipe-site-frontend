@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import * as localRecipeClient from "../../../Clients/localRecipeClient";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import "../../detailsStyles.css";
 import {
   Ingredient,
