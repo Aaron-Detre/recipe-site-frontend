@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import * as reviewClient from "../Clients/reviewClient";
@@ -9,11 +8,13 @@ import { Image, OverlayTrigger, Popover, Table } from "react-bootstrap";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import "../(Account)/profile/infoCardStyles.css";
 import { Review } from "../UtilClasses/Types";
+import { ApiRecipe } from "../UtilClasses/Types";
 import ReviewSummaryPopover from "./ReviewSummaryPopover";
 import FlexGap from "../UtilClasses/FlexGap";
+import type { OverlayTriggerRenderProps } from "react-bootstrap/OverlayTrigger";
 
 export default function RecipeSearchResultsPage() {
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<ApiRecipe[]>([]);
   const [apiRecipeReviews, setApiRecipeReviews] = useState<Review[][]>([]);
   const criteria = useSearchParams().get("criteria");
   const searchApiRecipes = async (searchParam: string) => {
@@ -34,7 +35,10 @@ export default function RecipeSearchResultsPage() {
     if (criteria) searchApiRecipes(criteria);
   }, [criteria]);
 
-  const popover = (recipeDetails: any, triggerProps: any) => (
+  const popover = (
+    recipeDetails: ApiRecipe,
+    triggerProps: OverlayTriggerRenderProps
+  ) => (
     <ReviewSummaryPopover
       triggerProps={triggerProps}
       isApiRecipeReview={true}
@@ -73,7 +77,7 @@ export default function RecipeSearchResultsPage() {
                     <OverlayTrigger
                       trigger="click"
                       placement="top"
-                      overlay={(triggerProps: any) =>
+                      overlay={(triggerProps) =>
                         popover(recipe, triggerProps)
                       }
                     >

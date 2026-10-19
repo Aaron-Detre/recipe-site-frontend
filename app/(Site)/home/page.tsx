@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
   Card,
@@ -17,6 +16,7 @@ import * as recipeClient from "../Clients/recipeClient";
 import * as reviewClient from "../Clients/reviewClient";
 import displayStars from "../UtilClasses/DisplayStars";
 import { setTitle } from "../reducer";
+import { Recipe, Review, User } from "../UtilClasses/Types";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -25,11 +25,13 @@ export default function Home() {
   }, [dispatch]);
 
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const [userRecipes, setUserRecipes] = useState<any[]>([]);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [userRecipes, setUserRecipes] = useState<Recipe[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewImages, setReviewImages] = useState<string[]>([]);
 
-  const fiveMostRecent = (array: any[]): any[] => {
+  const fiveMostRecent = <T extends { datePosted: Date | string }>(
+    array: T[]
+  ): T[] => {
     const sorted = array.sort((a, b) => {
       return (
         new Date(b.datePosted).getTime() - new Date(a.datePosted).getTime()
@@ -73,7 +75,7 @@ export default function Home() {
     }
   };
 
-  const authorString = (user: any): string => {
+  const authorString = (user: string | User): string => {
     if (user) {
       if (typeof user === "string") {
         return user;
@@ -85,7 +87,7 @@ export default function Home() {
     }
   };
 
-  const fetchReviewImages = async (reviews: any[]) => {
+  const fetchReviewImages = async (reviews: Review[]) => {
     const images = await Promise.all(
       reviews.map(async (review, i) => {
         try {
@@ -95,6 +97,7 @@ export default function Home() {
             );
             return recipe?.img ?? "/images/plate.svg";
           } else {
+            if (!review.apiRecipeId) return "/images/plate.svg";
             const recipe = await recipeClient.getRecipeById(review.apiRecipeId);
             return recipe?.strMealThumb ?? "/images/plate.svg";
           }

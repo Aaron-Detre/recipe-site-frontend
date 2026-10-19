@@ -7,14 +7,15 @@ import { useEffect, useState } from "react";
 import RecipeListCard from "../RecipeListCard";
 import { RootState } from "@/app/(Site)/store";
 import Link from "next/link";
+import { Recipe, UserProfile } from "@/app/(Site)/UtilClasses/Types";
 
 export default function AuthoredRecipes() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.account);
   const searchParams = useSearchParams();
   const authorId = searchParams.get("id");
-  const [author, setAuthor] = useState<any>(null);
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [author, setAuthor] = useState<UserProfile | null>(null);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
 
   const fetchAuthor = async () => {
     if (authorId !== null) {
@@ -31,7 +32,7 @@ export default function AuthoredRecipes() {
     fetchAuthor();
   }, [authorId]);
 
-  const addSIfNotOneItemInArray = (array: any[]): string =>
+  const addSIfNotOneItemInArray = <T,>(array: T[]): string =>
     array.length !== 1 ? "s" : "";
   const getAuthoredCardTitle = () =>
     `${recipes.length ?? 0} Recipe${addSIfNotOneItemInArray(recipes)} Authored`;

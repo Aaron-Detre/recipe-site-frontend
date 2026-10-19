@@ -1,5 +1,9 @@
 import { Popover, Table } from "react-bootstrap";
 import { Review } from "../UtilClasses/Types";
+import { ApiRecipe, Recipe } from "../UtilClasses/Types";
+import type { OverlayTriggerRenderProps } from "react-bootstrap/OverlayTrigger";
+
+type RecipeDetails = ApiRecipe | Recipe;
 
 export default function ReviewSummaryPopover({
   triggerProps,
@@ -7,19 +11,19 @@ export default function ReviewSummaryPopover({
   recipeReviews,
   recipeDetails,
 }: {
-  triggerProps: any;
+  triggerProps: OverlayTriggerRenderProps;
   isApiRecipeReview: boolean;
   recipeReviews: Review[][];
-  recipeDetails: any;
+  recipeDetails: RecipeDetails;
 }) {
   const reviewsForRecipe =
     recipeReviews
       .filter((reviews: Review[]) =>
         reviews.some((review: Review) =>
           isApiRecipeReview
-            ? review.apiRecipeId === recipeDetails.idMeal
-            : review.localRecipeId === recipeDetails._id
-        )
+            ? review.apiRecipeId === (recipeDetails as ApiRecipe).idMeal
+            : review.localRecipeId === (recipeDetails as Recipe)._id,
+        ),
       )
       ?.at(0) ?? [];
   const avg = (reviews: Review[]) => {

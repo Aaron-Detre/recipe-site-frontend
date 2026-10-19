@@ -9,23 +9,25 @@ export const getAllReviewsForRecipe = async (
   recipeId: string,
   isApiRecipe: boolean
 ) => {
-  const response = await axiosWithCredentials.get(
+  const response = await axiosWithCredentials.get<Review[]>(
     `${REVIEWS_API}/${isApiRecipe ? "api" : "local"}/${recipeId}`
   );
   return response.data;
 };
 export const getAllReviews = async () => {
-  const response = await axiosWithCredentials.get(`${REVIEWS_API}`);
+  const response = await axiosWithCredentials.get<Review[]>(`${REVIEWS_API}`);
   return response.data;
 };
 export const getFollowingReviews = async (userId: string) => {
-  const response = await axiosWithCredentials.get(
+  const response = await axiosWithCredentials.get<Review[]>(
     `${REVIEWS_API}/following/${userId}`
   );
   return response.data;
 };
 export const getReviewById = async (reviewId: string) => {
-  const response = await axiosWithCredentials.get(`${REVIEWS_API}/${reviewId}`);
+  const response = await axiosWithCredentials.get<Review>(
+    `${REVIEWS_API}/${reviewId}`
+  );
   return response.data;
 };
 export const createReview = async (review: Review) => {

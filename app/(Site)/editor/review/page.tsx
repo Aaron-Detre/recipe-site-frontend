@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import * as localRecipeClient from "../../Clients/localRecipeClient";
@@ -19,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { v4 as uuidv4 } from "uuid";
 import { setTitle } from "@/app/(Site)/reducer";
+import type { ChangeEvent, SubmitEvent } from "react";
 
 export default function ReviewEditor() {
   const dispatch = useDispatch();
@@ -40,8 +40,10 @@ export default function ReviewEditor() {
   const setApiRecipeDetails = async (apiRecipeId: string) => {
     if (!detailsSet) {
       const apiRecipe = await recipeClient.getRecipeById(apiRecipeId);
-      setRecipeTitle(apiRecipe.strMeal);
-      detailsSet = true;
+      if (apiRecipe) {
+        setRecipeTitle(apiRecipe.strMeal);
+        detailsSet = true;
+      }
     }
   };
   const setLocalRecipeDetails = async (localRecipeId: string) => {
@@ -92,10 +94,12 @@ export default function ReviewEditor() {
     return starIcons;
   };
 
-  const titleChanges = (e: any) => setReviewTitle(e.target.value);
-  const textChanges = (e: any) => setReviewText(e.target.value);
+  const titleChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setReviewTitle(e.target.value);
+  const textChanges = (e: ChangeEvent<HTMLTextAreaElement>) =>
+    setReviewText(e.target.value);
 
-  const publishReview = async (e: any) => {
+  const publishReview = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (currentUser && reviewTitle !== "") {
       const reviewId = uuidv4();

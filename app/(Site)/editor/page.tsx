@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
   Button,
@@ -15,6 +14,7 @@ import {
   InstructionWithId,
   ScalableIngredient,
 } from "../UtilClasses/Types";
+import type { ChangeEvent, SubmitEvent } from "react";
 import { useEffect, useState } from "react";
 import * as recipeClient from "../Clients/recipeClient";
 import * as localRecipeClient from "../Clients/localRecipeClient";
@@ -53,7 +53,8 @@ export default function Editor() {
 
   const fetchRecipe = async () => {
     if ((localRecipeId || apiRecipeId) && !(localRecipeId && apiRecipeId)) {
-      const recipeIngredients: any = [];
+      const recipeIngredients: Ingredient[] = [];
+      const recipeScalableIngredients: ScalableIngredient[] = [];
       const recipeInstructions: InstructionWithId[] = [];
       if (localRecipeId) {
         const localRecipe = await localRecipeClient.getRecipeById(
@@ -63,13 +64,12 @@ export default function Editor() {
         if (localRecipe.img) setImage(localRecipe.img);
         setScalable(localRecipe.scalable);
         if (localRecipe.scalable) {
-          localRecipe.scalableIngredients?.forEach(
-            (ingredient: ScalableIngredient) =>
-              recipeIngredients.push({ ...ingredient, id: uuidv4() })
+          localRecipe.scalableIngredients?.forEach((ingredient) =>
+            recipeScalableIngredients.push({ ...ingredient, id: uuidv4() })
           );
-          setScalableIngredients(recipeIngredients);
+          setScalableIngredients(recipeScalableIngredients);
         } else {
-          localRecipe.ingredients?.forEach((ingredient: Ingredient) =>
+          localRecipe.ingredients?.forEach((ingredient) =>
             recipeIngredients.push({ ...ingredient, id: uuidv4() })
           );
           setIngredients(recipeIngredients);
@@ -79,6 +79,7 @@ export default function Editor() {
         );
       } else if (apiRecipeId) {
         const apiRecipe = await recipeClient.getRecipeById(apiRecipeId);
+        if (!apiRecipe) return;
         setRecipeTitle(apiRecipe.strMeal);
         setImage(apiRecipe.strMealThumb);
         for (let i = 1; i < 21; i++) {
@@ -97,7 +98,7 @@ export default function Editor() {
         apiRecipe.strInstructions
           .split("\r\n")
           .filter(
-            (instruction: string) =>
+            (instruction) =>
               instruction &&
               instruction !== "" &&
               !matchesStepPattern(instruction)
@@ -117,12 +118,17 @@ export default function Editor() {
     fetchRecipe();
   }, [localRecipeId, apiRecipeId]);
 
-  const titleChanges = (e: any) => setRecipeTitle(e.target.value);
-  const imageChanges = (e: any) => setImage(e.target.value);
+  const titleChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setRecipeTitle(e.target.value);
+  const imageChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setImage(e.target.value);
 
-  const instructionChanges = (e: any, instructionIndex: number) => {
+  const instructionChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    instructionIndex: number
+  ) => {
     const updatedInstructions = instructions.map(
-      (instruction: InstructionWithId, index) => {
+      (instruction, index) => {
         if (instructionIndex === index) {
           return { id: instruction.id, instruction: e.target.value };
         } else {
@@ -139,7 +145,7 @@ export default function Editor() {
       instructions.filter((instruction, index) => instructionIndex !== index)
     );
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const id = uuidv4();
     await publishRecipe(id);
@@ -267,7 +273,7 @@ export default function Editor() {
                               as={"textarea"}
                               placeholder="Add instructions"
                               value={instruction.instruction}
-                              onChange={(e: any) =>
+                              onChange={(e) =>
                                 instructionChanges(e, index)
                               }
                               required

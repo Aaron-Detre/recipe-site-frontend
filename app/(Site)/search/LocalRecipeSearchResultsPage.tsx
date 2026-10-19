@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Review } from "../UtilClasses/Types";
+import { Recipe } from "../UtilClasses/Types";
+import type { OverlayTriggerRenderProps } from "react-bootstrap/OverlayTrigger";
 import { useSearchParams } from "next/navigation";
 import * as localRecipeClient from "../Clients/localRecipeClient";
 import * as reviewClient from "../Clients/reviewClient";
@@ -12,7 +14,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 import FlexGap from "../UtilClasses/FlexGap";
 
 export default function LocalRecipeSearchResultsPage() {
-  const [recipes, setRecipes] = useState<any[]>([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [localRecipeReviews, setLocalRecipeReviews] = useState<Review[][]>([]);
   const criteria = useSearchParams().get("criteria");
 
@@ -34,7 +36,10 @@ export default function LocalRecipeSearchResultsPage() {
     if (criteria) searchLocalRecipes(criteria);
   }, [criteria]);
 
-  const popover = (recipeDetails: any, triggerProps: any) => (
+  const popover = (
+    recipeDetails: Recipe,
+    triggerProps: OverlayTriggerRenderProps
+  ) => (
     <ReviewSummaryPopover
       triggerProps={triggerProps}
       isApiRecipeReview={false}

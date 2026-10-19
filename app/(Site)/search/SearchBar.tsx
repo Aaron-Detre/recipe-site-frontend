@@ -1,18 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Button, Col, FormControl, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 export default function SearchBar({ placeholder }: { placeholder: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const [query, setQuery] = useState("");
-  const onSearchQueryChanges = (e: any) => setQuery(e.target.value);
+  const onSearchQueryChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setQuery(e.target.value);
   const searchRoute = `/search?tab=${tab}&criteria=${query}`;
-  const handleKeyDown = (e: any) =>
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) =>
     e.key === "Enter" && router.push(searchRoute);
 
   return (

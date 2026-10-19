@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import FlexGap from "../../UtilClasses/FlexGap";
@@ -9,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setTitle } from "../../reducer";
 import { setCurrentUser } from "../reducer";
+import type { ChangeEvent, SubmitEvent } from "react";
 
 export default function SignUp() {
   const dispatch = useDispatch();
@@ -27,18 +27,18 @@ export default function SignUp() {
     role: "BOTH",
   });
 
-  const usernameChanges = (e: any) =>
+  const usernameChanges = (e: ChangeEvent<HTMLInputElement>) =>
     setNewUser({ ...newUser, username: e.target.value });
-  const passwordChanges = (e: any) =>
+  const passwordChanges = (e: ChangeEvent<HTMLInputElement>) =>
     setNewUser({ ...newUser, password: e.target.value });
-  const emailChanges = (e: any) =>
+  const emailChanges = (e: ChangeEvent<HTMLInputElement>) =>
     setNewUser({ ...newUser, email: e.target.value });
-  const phoneNumberChanges = (e: any) =>
+  const phoneNumberChanges = (e: ChangeEvent<HTMLInputElement>) =>
     setNewUser({ ...newUser, phone: e.target.value });
   const roleChanges = (value: string) =>
     setNewUser({ ...newUser, role: value });
 
-  const signUp = async (e: any) => {
+  const signUp = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const signedUp = await userClient.signUp(newUser);
     if (signedUp) {

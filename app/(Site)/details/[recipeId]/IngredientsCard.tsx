@@ -14,6 +14,7 @@ import {
   IngredientWithId,
   ScalableIngredient,
 } from "../../UtilClasses/Types";
+import type { ChangeEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import FlexGap from "../../UtilClasses/FlexGap";
@@ -26,13 +27,14 @@ export default function IngredientsCard({
   scalable: boolean;
 }) {
   const addId = (
-    ingredient: Ingredient | ScalableIngredient
+    ingredient: Ingredient | ScalableIngredient,
   ): Ingredient | ScalableIngredient => {
     return { ...ingredient, id: uuidv4() };
   };
   const ingredientsWithIds = ingredients.map(addId);
   const [scale, setScale] = useState(1);
-  const scaleChanges = (e: any) => setScale(e.target.value);
+  const scaleChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setScale(Number(e.target.value));
   const scaleIngredient = (amount: number) => {
     const scaledNum = amount * scale;
     let scaledStr = scaledNum.toString();
@@ -58,24 +60,25 @@ export default function IngredientsCard({
       <CardBody>
         <ListGroup className="wdf-details-ingredients-list">
           {ingredients.length > 0 ? (
-            ingredientsWithIds.map((ingredient: any) =>
+            ingredientsWithIds.map((ingredient) =>
               scalable ? (
                 <ListGroupItem key={ingredient.id}>
                   <span>{ingredient.ingredient}</span>
-                  {(ingredient.unit || ingredient.amount) && (
-                    <span>{` - ${scaleIngredient(ingredient.amount)} ${
-                      ingredient.unit
-                    }`}</span>
-                  )}
+                  {"amount" in ingredient &&
+                    (ingredient.unit || ingredient.amount) && (
+                      <span>{` - ${scaleIngredient(ingredient.amount)} ${
+                        ingredient.unit
+                      }`}</span>
+                    )}
                 </ListGroupItem>
               ) : (
                 <ListGroupItem key={ingredient.id}>
                   <span>{ingredient.ingredient}</span>
-                  {ingredient.measure && (
+                  {"measure" in ingredient && ingredient.measure && (
                     <span>{" - " + ingredient.measure}</span>
                   )}
                 </ListGroupItem>
-              )
+              ),
             )
           ) : (
             <span>No ingredients...</span>

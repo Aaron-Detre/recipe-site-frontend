@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { AppDispatch, RootState } from "@/app/(Site)/store";
 import FlexGap from "@/app/(Site)/UtilClasses/FlexGap";
@@ -10,6 +9,8 @@ import { setCurrentUser } from "../reducer";
 import { redirect } from "next/navigation";
 import * as userClient from "../../Clients/userClient";
 import { setTitle } from "../../reducer";
+import { User } from "../../UtilClasses/Types";
+import type { ChangeEvent, SubmitEvent } from "react";
 
 export default function Settings() {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ export default function Settings() {
     dispatch(setTitle("Settings"));
   }, [dispatch]);
 
-  const [updatedUser, setUpdatedUser] = useState<any>(null);
+  const [updatedUser, setUpdatedUser] = useState<User | null>(null);
   const { currentUser } = useSelector((state: RootState) => state.account);
 
   const fetchProfile = () => {
@@ -31,20 +32,24 @@ export default function Settings() {
     fetchProfile();
   }, [currentUser]);
 
-  const usernameChanges = (e: any) =>
-    setUpdatedUser({ ...updatedUser, username: e.target.value });
-  const passwordChanges = (e: any) =>
-    setUpdatedUser({ ...updatedUser, password: e.target.value });
-  const emailChanges = (e: any) =>
-    setUpdatedUser({ ...updatedUser, email: e.target.value });
-  const phoneNumberChanges = (e: any) =>
-    setUpdatedUser({ ...updatedUser, phone: e.target.value });
+  const usernameChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setUpdatedUser((user) =>
+      user ? { ...user, username: e.target.value } : user
+    );
+  const passwordChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setUpdatedUser((user) =>
+      user ? { ...user, password: e.target.value } : user
+    );
+  const emailChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setUpdatedUser((user) => (user ? { ...user, email: e.target.value } : user));
+  const phoneNumberChanges = (e: ChangeEvent<HTMLInputElement>) =>
+    setUpdatedUser((user) => (user ? { ...user, phone: e.target.value } : user));
   const roleChanges = (value: string) =>
-    setUpdatedUser({ ...updatedUser, role: value });
+    setUpdatedUser((user) => (user ? { ...user, role: value } : user));
 
-  const onSave = (e: any) => {
+  const onSave = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (updatedUser.username && updatedUser.password) {
+    if (updatedUser?.username && updatedUser.password) {
       userClient.updateUser(updatedUser._id, updatedUser);
       dispatch(setCurrentUser(updatedUser));
     }

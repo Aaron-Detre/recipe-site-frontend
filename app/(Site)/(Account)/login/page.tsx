@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import {
@@ -15,6 +14,7 @@ import FlexGap from "../../UtilClasses/FlexGap";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "../reducer";
+import type { ChangeEvent, KeyboardEvent, SubmitEvent } from "react";
 import { redirect } from "next/navigation";
 import * as userClient from "../../Clients/userClient";
 import { setTitle } from "../../reducer";
@@ -38,14 +38,15 @@ export default function SignIn() {
       redirect("/");
     }
   };
-  const usernameChanges = (e: any) => {
+  const usernameChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, username: e.target.value });
   };
-  const passwordChanges = (e: any) => {
+  const passwordChanges = (e: ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, password: e.target.value });
   };
-  const handleKeyDown = (e: any) => e.key === "Enter" && signIn();
-  const handleSubmit = (e: any) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) =>
+    e.key === "Enter" && signIn();
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (credentials.username !== "" && credentials.password !== "") {
       signIn();

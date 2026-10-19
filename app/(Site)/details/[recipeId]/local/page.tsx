@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useParams } from "next/navigation";
@@ -6,7 +5,11 @@ import { useEffect, useState } from "react";
 import * as localRecipeClient from "../../../Clients/localRecipeClient";
 import { Button, Col, Image, Row } from "react-bootstrap";
 import "../../detailsStyles.css";
-import { Ingredient } from "@/app/(Site)/UtilClasses/Types";
+import {
+  Ingredient,
+  Recipe,
+  ScalableIngredient,
+} from "@/app/(Site)/UtilClasses/Types";
 import InstructionsCard from "../InstructionsCard";
 import IngredientsCard from "../IngredientsCard";
 import ReviewsCard from "../ReviewsCard";
@@ -25,20 +28,18 @@ export default function ApiRecipeDetails() {
   }, [dispatch]);
 
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const { recipeId } = useParams();
-  const [recipe, setRecipe] = useState<any>(null);
+  const { recipeId } = useParams<{ recipeId: string }>();
+  const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [scalable, setScalable] = useState(false);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [scalableIngredients, setScalableIngredients] = useState<Ingredient[]>(
-    []
-  );
+  const [scalableIngredients, setScalableIngredients] = useState<
+    ScalableIngredient[]
+  >([]);
   const [instructions, setInstructions] = useState<string[]>([]);
   const [hasImage, setHasImage] = useState(true);
 
   const fetchRecipeDetails = async () => {
-    const recipeDetails = await localRecipeClient.getRecipeById(
-      recipeId as string
-    );
+    const recipeDetails = await localRecipeClient.getRecipeById(recipeId);
     setRecipe(recipeDetails);
     setIngredients(recipeDetails.ingredients);
     setScalableIngredients(recipeDetails.scalableIngredients);
@@ -79,6 +80,7 @@ export default function ApiRecipeDetails() {
   const isYourRecipe = () =>
     recipe && currentUser && recipe.recipeAuthor._id === currentUser._id;
   const handleDeleteClicked = async () => {
+    if (!recipe) return;
     if (confirm("Are you sure you want to permanently delete this recipe?")) {
       await localRecipeClient.deleteRecipe(recipe._id);
       history.back();

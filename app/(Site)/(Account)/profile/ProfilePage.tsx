@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import { HiCog } from "react-icons/hi2";
@@ -15,6 +14,7 @@ import { Button, Col, Modal, Row } from "react-bootstrap";
 import "./profileStyles.css";
 import UserList from "./UserList";
 import { setTitle } from "../../reducer";
+import { Recipe, Review } from "../../UtilClasses/Types";
 
 const getUserRole = (user: User): string => {
   let displayRole: string;
@@ -56,13 +56,13 @@ export default function ProfilePage() {
   const lastPathTerm = pathname.at(pathname.length - 1);
   const isYourProfile = lastPathTerm === "profile";
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<User | null>(null);
   const [username, setUsername] = useState("");
   const [role, setRole] = useState("");
-  const [following, setFollowing] = useState([]);
-  const [followers, setFollowers] = useState([]);
-  const [authored, setAuthored] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const [following, setFollowing] = useState<User[]>([]);
+  const [followers, setFollowers] = useState<User[]>([]);
+  const [authored, setAuthored] = useState<Recipe[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [doesCurrentUserFollowProfile, setDoesCurrentUserFollowProfile] =
     useState(false);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -75,7 +75,7 @@ export default function ProfilePage() {
       updateFollowingProfile(currentUser._id, user._id);
     }
   };
-  const setUserDetails = (user: any) => {
+  const setUserDetails = (user: User) => {
     setProfile(user);
     setUsername(user.username);
     setRole(getUserRole(user));
@@ -92,11 +92,13 @@ export default function ProfilePage() {
       if (currentUser?._id === lastPathTerm) {
         redirect("/profile");
       }
-      fetchUserById(lastPathTerm as string);
+      if (lastPathTerm) {
+        fetchUserById(lastPathTerm);
+      }
     }
   }, [currentUser, isYourProfile]);
 
-  const addSIfNotOneItemInArray = (array: any[]): string =>
+  const addSIfNotOneItemInArray = <T,>(array: T[]): string =>
     array.length !== 1 ? "s" : "";
   const getAuthoredCardTitle = () =>
     `${authored.length} Recipe${addSIfNotOneItemInArray(authored)} Authored`;
@@ -122,7 +124,7 @@ export default function ProfilePage() {
   };
 
   const getReviewsWidth = () => {
-    switch (profile.role) {
+    switch (profile?.role) {
       case "AUTHOR":
         return 0;
       case "REVIEWER":
@@ -132,7 +134,7 @@ export default function ProfilePage() {
     }
   };
   const getAuthoredWidth = () => {
-    switch (profile.role) {
+    switch (profile?.role) {
       case "AUTHOR":
         return 12;
       case "REVIEWER":

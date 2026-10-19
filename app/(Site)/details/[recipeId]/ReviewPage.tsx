@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTitle } from "../../reducer";
 import { RootState } from "../../store";
 import FlexGap from "../../UtilClasses/FlexGap";
+import { ApiRecipe, Recipe, Review } from "../../UtilClasses/Types";
 const defaultImage = "/images/plate.svg";
 
 export default function ReviewPage({
@@ -28,18 +28,21 @@ export default function ReviewPage({
 
   const { currentUser } = useSelector((state: RootState) => state.account);
 
-  const { recipeId, reviewId } = useParams();
-  const [recipe, setRecipe] = useState<any>(null);
-  const [review, setReview] = useState<any>(null);
+  const { recipeId, reviewId } = useParams<{
+    recipeId: string;
+    reviewId: string;
+  }>();
+  const [recipe, setRecipe] = useState<Recipe | ApiRecipe | undefined>();
+  const [review, setReview] = useState<Review | undefined>();
 
   const fetchRecipe = async () => {
     const recipeData = isLocalRecipeReview
-      ? await localRecipeClient.getRecipeById(recipeId as string)
-      : await recipeClient.getRecipeById(recipeId as string);
+      ? await localRecipeClient.getRecipeById(recipeId)
+      : await recipeClient.getRecipeById(recipeId);
     setRecipe(recipeData);
   };
   const fetchReview = async () => {
-    const reviewData = await reviewClient.getReviewById(reviewId as string);
+    const reviewData = await reviewClient.getReviewById(reviewId);
     setReview(reviewData);
   };
 
@@ -49,8 +52,9 @@ export default function ReviewPage({
   }, [recipeId, reviewId]);
 
   const isYourReview = () =>
-    currentUser && review && currentUser._id === review.reviewAuthor._id;
+    !!currentUser && !!review && currentUser._id === review.reviewAuthor._id;
   const handleDeleteClicked = async () => {
+    if (!review) return;
     if (confirm("Are you sure you want to permanently delete this review?")) {
       await reviewClient.deleteReview(review._id);
       history.back();
@@ -66,21 +70,23 @@ export default function ReviewPage({
         <Card
           as={Link}
           href={`/details/${
-            isLocalRecipeReview ? recipe?._id : recipe?.idMeal
+            recipe && "_id" in recipe ? recipe._id : recipe?.idMeal
           }/${isLocalRecipeReview ? "local" : "api"}`}
           className="wdf-review-recipe-card shadow"
         >
           <Card.Img
             src={
               isLocalRecipeReview
-                ? recipe?.img ?? defaultImage
-                : recipe?.strMealThumb
+                ? ((recipe as Recipe)?.img ?? defaultImage)
+                : (recipe as ApiRecipe)?.strMealThumb
             }
             className="wdf-review-recipe-image"
           />
           <Card.Body>
             <Card.Title className="wdf-review-recipe-title">
-              {isLocalRecipeReview ? recipe?.recipeTitle : recipe?.strMeal}
+              {isLocalRecipeReview
+                ? (recipe as Recipe)?.recipeTitle
+                : (recipe as ApiRecipe)?.strMeal}
             </Card.Title>
           </Card.Body>
         </Card>
@@ -92,7 +98,7 @@ export default function ReviewPage({
               {review?.reviewAuthor.username}
             </Link>
           </span>
-          <div>{displayStars(review?.stars)}</div>
+          <div>{review ? displayStars(review.stars) : null}</div>
           <FlexGap />
           {isYourReview() && (
             <Button

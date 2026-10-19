@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,7 +12,7 @@ export default function TOCOffcanvas({
   handleClose,
 }: {
   show: boolean;
-  handleClose: any;
+  handleClose: () => void;
 }) {
   const pathname = usePathname();
 

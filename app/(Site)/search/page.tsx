@@ -22,9 +22,11 @@ export default function Search() {
   const tab = searchParams.get("tab");
 
   const [key, setKey] = useState(tab ?? "recipes");
-  const handleTabSelect = (k: any) => {
-    setKey(k);
-    router.push(`/search?tab=${k}`);
+  const handleTabSelect = (selectedKey: string | null) => {
+    if (selectedKey) {
+      setKey(selectedKey);
+      router.push(`/search?tab=${selectedKey}`);
+    }
   };
 
   return (

@@ -5,9 +5,10 @@ import * as userClient from "../Clients/userClient";
 import SearchBar from "./SearchBar";
 import Link from "next/link";
 import { Image } from "react-bootstrap";
+import { User } from "../UtilClasses/Types";
 
 export default function UserSearchResultsPage() {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const criteria = useSearchParams().get("criteria");
   const searchUsers = async (searchParam: string) => {
     const users = await userClient.filterUsersByName(searchParam);

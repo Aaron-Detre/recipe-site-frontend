@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import {
   Card,
@@ -21,8 +20,8 @@ export default function ReviewsCard({
 }: {
   isReviewOfApiRecipe: boolean;
 }) {
-  const [reviews, setReviews] = useState<any[]>([]);
-  const { recipeId } = useParams();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const { recipeId } = useParams<{ recipeId: string }>();
 
   const fetchAllReviewsForRecipe = async (rid: string) => {
     const reviewsForRecipe = await reviewClient.getAllReviewsForRecipe(
@@ -33,7 +32,7 @@ export default function ReviewsCard({
   };
   useEffect(() => {
     if (recipeId) {
-      fetchAllReviewsForRecipe(recipeId as string);
+      fetchAllReviewsForRecipe(recipeId);
     }
   }, [recipeId]);
 
@@ -51,7 +50,7 @@ export default function ReviewsCard({
       <Card.Body>
         {reviews.length > 0 ? (
           <ListGroup>
-            {reviews.map((review: Review) => (
+            {reviews.map((review) => (
               <ListGroupItem
                 key={review._id}
                 className="d-flex align-items-center wdf-cursor-pointer"

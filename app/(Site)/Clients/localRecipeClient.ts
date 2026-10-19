@@ -6,23 +6,23 @@ const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
 const RECIPES_API = `${HTTP_SERVER}/api/recipes`;
 
 export const filterRecipesByTitle = async (query: string) => {
-  const response = await axiosWithCredentials.get(
+  const response = await axiosWithCredentials.get<Recipe[]>(
     `${RECIPES_API}?title=${query}`
   );
   return response.data;
 };
 export const getRecipeById = async (recipeId: string) => {
-  const response = await axiosWithCredentials.get(
+  const response = await axiosWithCredentials.get<Recipe>(
     `${RECIPES_API}?id=${recipeId}`
   );
   return response.data;
 };
 export const getAllLocalRecipes = async () => {
-  const response = await axiosWithCredentials.get(`${RECIPES_API}`);
+  const response = await axiosWithCredentials.get<Recipe[]>(`${RECIPES_API}`);
   return response.data;
 };
 export const getFollowingRecipes = async (userId: string) => {
-  const response = await axiosWithCredentials.get(
+  const response = await axiosWithCredentials.get<Recipe[]>(
     `${RECIPES_API}/following/${userId}`
   );
   return response.data;

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import {
   Button,
@@ -15,6 +14,7 @@ import { useState } from "react";
 import { Ingredient, ScalableIngredient } from "../UtilClasses/Types";
 import { FaTrashAlt } from "react-icons/fa";
 import FlexGap from "../UtilClasses/FlexGap";
+import type { ChangeEvent } from "react";
 
 export default function IngredientsEditor({
   scalable,
@@ -31,7 +31,10 @@ export default function IngredientsEditor({
   scalableIngredients: ScalableIngredient[];
   setScalableIngredients: Function;
 }) {
-  const ingredientChanges = (e: any, ingredientIndex: number) => {
+  const ingredientChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ingredientIndex: number
+  ) => {
     const mapIngredients = <T,>(ingredient: T, index: number) => {
       if (ingredientIndex === index) {
         return { ...ingredient, ingredient: e.target.value };
@@ -47,7 +50,10 @@ export default function IngredientsEditor({
       setIngredients(ingredients.map(mapIngredients<Ingredient>));
     }
   };
-  const measurementChanges = (e: any, measurementIndex: number) =>
+  const measurementChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    measurementIndex: number
+  ) =>
     setIngredients(
       ingredients.map((ingredient: Ingredient, index) => {
         if (measurementIndex === index) {
@@ -57,7 +63,10 @@ export default function IngredientsEditor({
         }
       })
     );
-  const amountChanges = (e: any, amountIndex: number) =>
+  const amountChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    amountIndex: number
+  ) =>
     setScalableIngredients(
       scalableIngredients.map((ingredient: ScalableIngredient, index) => {
         if (amountIndex === index) {
@@ -67,7 +76,10 @@ export default function IngredientsEditor({
         }
       })
     );
-  const unitChanges = (e: any, unitIndex: number) =>
+  const unitChanges = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    unitIndex: number
+  ) =>
     setScalableIngredients(
       scalableIngredients.map((ingredient: ScalableIngredient, index) => {
         if (unitIndex === index) {
@@ -154,7 +166,7 @@ export default function IngredientsEditor({
     };
     setScalableIngredients(ingredients.map(convertToScalable));
   };
-  const toggleScalable = (e: any) => {
+  const toggleScalable = (e: ChangeEvent<HTMLInputElement>) => {
     if (scalable) {
       convertScalableIngredientsToStandard();
     } else {
@@ -201,7 +213,7 @@ export default function IngredientsEditor({
                   <FormControl
                     type="text"
                     placeholder="Ingredient Name"
-                    onChange={(e: any) => ingredientChanges(e, index)}
+                    onChange={(e) => ingredientChanges(e, index)}
                     required
                     value={ingredient.ingredient}
                   />
@@ -213,7 +225,7 @@ export default function IngredientsEditor({
                       <FormControl
                         type="number"
                         placeholder="Amount"
-                        onChange={(e: any) => amountChanges(e, index)}
+                        onChange={(e) => amountChanges(e, index)}
                         required
                         value={ingredient.amount}
                       />
@@ -225,7 +237,7 @@ export default function IngredientsEditor({
                       <FormControl
                         type="text"
                         placeholder="Unit of Measurement"
-                        onChange={(e: any) => unitChanges(e, index)}
+                        onChange={(e) => unitChanges(e, index)}
                         required
                         value={ingredient.unit}
                       />
@@ -257,7 +269,7 @@ export default function IngredientsEditor({
                       <FormControl
                         type="text"
                         placeholder="Ingredient Name"
-                        onChange={(e: any) => ingredientChanges(e, index)}
+                        onChange={(e) => ingredientChanges(e, index)}
                         required
                         value={ingredient.ingredient}
                       />
@@ -271,7 +283,7 @@ export default function IngredientsEditor({
                       <FormControl
                         type="text"
                         placeholder="Ingredient Measurement"
-                        onChange={(e: any) => measurementChanges(e, index)}
+                        onChange={(e) => measurementChanges(e, index)}
                         required
                         value={ingredient.measure}
                       />

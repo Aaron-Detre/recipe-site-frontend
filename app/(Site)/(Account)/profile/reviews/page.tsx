@@ -7,14 +7,15 @@ import { useEffect, useState } from "react";
 import ReviewListCard from "../ReviewListCard";
 import Link from "next/link";
 import { RootState } from "@/app/(Site)/store";
+import { Review, UserProfile } from "@/app/(Site)/UtilClasses/Types";
 
 export default function Reviews() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.account);
   const searchParams = useSearchParams();
   const authorId = searchParams.get("id");
-  const [author, setAuthor] = useState<any>(null);
-  const [reviews, setReviews] = useState<any[]>([]);
+  const [author, setAuthor] = useState<UserProfile | null>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const fetchAuthor = async () => {
     if (authorId) {
@@ -31,7 +32,7 @@ export default function Reviews() {
     fetchAuthor();
   }, [authorId]);
 
-  const addSIfNotOneItemInArray = (array: any[]): string =>
+  const addSIfNotOneItemInArray = <T,>(array: T[]): string =>
     array.length !== 1 ? "s" : "";
   const getReviewsCardTitle = () =>
     `${reviews.length} Recipe${addSIfNotOneItemInArray(reviews)} Reviewed`;

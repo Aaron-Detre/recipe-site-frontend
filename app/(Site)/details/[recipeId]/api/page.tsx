@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import { RootState } from "@/app/(Site)/store";
 import BackButton from "../BackButton";
 import FlexGap from "@/app/(Site)/UtilClasses/FlexGap";
 import { setTitle } from "@/app/(Site)/reducer";
+import { ApiRecipe } from "@/app/(Site)/UtilClasses/Types";
 const defaultImage = "/images/plate.svg";
 
 const firstLetterToUppercase = (str: string) =>
@@ -26,16 +26,16 @@ export default function ApiRecipeDetails() {
   }, [dispatch]);
 
   const { currentUser } = useSelector((state: RootState) => state.account);
-  const { recipeId } = useParams();
-  const [recipe, setRecipe] = useState<any>(null);
+  const { recipeId } = useParams<{ recipeId: string }>();
+  const [recipe, setRecipe] = useState<ApiRecipe | null>(null);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [instructions, setInstructions] = useState<string[]>([]);
 
-  const setIngredientDetails = (recipeDetails: any) => {
+  const setIngredientDetails = (recipeDetails: ApiRecipe) => {
     const listIngredients: Ingredient[] = [];
     for (let i = 1; i < 21; i++) {
-      if (recipeDetails[`strIngredient${i}`]) {
-        const ingredient = recipeDetails[`strIngredient${i}`];
+      const ingredient = recipeDetails[`strIngredient${i}`];
+      if (ingredient) {
         const measure = recipeDetails[`strMeasure${i}`];
         listIngredients.push({
           ingredient: firstLetterToUppercase(ingredient),
@@ -47,16 +47,17 @@ export default function ApiRecipeDetails() {
   };
   const matchesStepPattern = (str: string) => /^step \d+$/.test(str);
 
-  const setInstructionDetails = (recipeDetails: any) => {
-    let listInstructions = recipeDetails.strInstructions.split("\r\n");
-    listInstructions = listInstructions.filter(
-      (instruction: string) =>
-        instruction !== "" && !matchesStepPattern(instruction)
-    );
+  const setInstructionDetails = (recipeDetails: ApiRecipe) => {
+    const listInstructions = recipeDetails.strInstructions
+      .split("\r\n")
+      .filter(
+        (instruction) => instruction !== "" && !matchesStepPattern(instruction),
+      );
     setInstructions(listInstructions);
   };
   const fetchRecipeDetails = async () => {
-    const recipeDetails = await recipeClient.getRecipeById(recipeId as string);
+    const recipeDetails = await recipeClient.getRecipeById(recipeId);
+    if (!recipeDetails) return;
     setRecipe(recipeDetails);
     setIngredientDetails(recipeDetails);
     setInstructionDetails(recipeDetails);
